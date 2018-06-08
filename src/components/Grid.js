@@ -43,7 +43,7 @@ class Grid extends PureComponent {
 
     return (
       <div style={stylize(this.props).title}>
-        <h3 align="center">Your size : { positionsAll.length-1 }</h3>
+        <h3 align="center"></h3>
           <div style={stylize(this.props).divWall}>
           {
             Array(lines).fill(true).map((value,y) => (

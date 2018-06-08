@@ -18,7 +18,9 @@ class App extends PureComponent {
       positionTete: new Element(5, 5, cellTypes.snakeHead),
       positionSnake: Array(),
       positionSnack: new Element(3, 3, cellTypes.snack),
-      lastDirection: 0
+      lastDirection: 0,
+      score: 0,
+      isPause: false
     }
 
     this.state.positionSnake.push(new Element(this.state.positionTete.line, this.state.positionTete.column-1, cellTypes.snake))
@@ -35,26 +37,37 @@ class App extends PureComponent {
       positionTete: new Element(5, 5, cellTypes.snakeHead),
       positionSnake: newSnake,
       positionSnack: this.generateSnack(),
-      lastDirection: 39
+      lastDirection: 39,
+      score: 0
     })
   }
 
   handleKeyup(event) {
-    let newPositionTeteLine = this.state.positionTete.line
-    let newPositionTeteColonne = this.state.positionTete.column
 
-    if(event.keyCode == 37 && this.state.lastDirection != 39) {
-      newPositionTeteColonne = newPositionTeteColonne-1
-      this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
-    } else if(event.keyCode == 38 && this.state.lastDirection != 40) {
-      newPositionTeteLine = newPositionTeteLine-1
-      this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
-    } else if(event.keyCode == 39 && this.state.lastDirection != 37) {
-      newPositionTeteColonne = newPositionTeteColonne+1
-      this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
-    } else if(event.keyCode == 40  && this.state.lastDirection != 38) {
-      newPositionTeteLine = newPositionTeteLine+1
-      this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
+    //console.log(event.keyCode)
+    if (event.keyCode == 19) {
+      this.setState({
+        isPause: !this.state.isPause
+      })
+    }
+
+    if (!this.state.isPause) {
+      let newPositionTeteLine = this.state.positionTete.line
+      let newPositionTeteColonne = this.state.positionTete.column
+
+      if(event.keyCode == 37 && this.state.lastDirection != 39) {
+        newPositionTeteColonne = newPositionTeteColonne-1
+        this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
+      } else if(event.keyCode == 38 && this.state.lastDirection != 40) {
+        newPositionTeteLine = newPositionTeteLine-1
+        this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
+      } else if(event.keyCode == 39 && this.state.lastDirection != 37) {
+        newPositionTeteColonne = newPositionTeteColonne+1
+        this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
+      } else if(event.keyCode == 40  && this.state.lastDirection != 38) {
+        newPositionTeteLine = newPositionTeteLine+1
+        this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
+      }
     }
 
   }
@@ -127,7 +140,8 @@ class App extends PureComponent {
       })
     } else if (cellColision === cellTypes.snack) {
       this.setState({
-        positionSnack: this.generateSnack()
+        positionSnack: this.generateSnack(),
+        score: this.state.score+1
       })
     } else if (cellColision === cellTypes.wall || cellColision === cellTypes.snake) {
       this.resetGame()
@@ -136,13 +150,17 @@ class App extends PureComponent {
 
   render() {
 
-    const { positionSnake, positionSnack, positionTete, lines, columns } = this.state;
+    const { positionSnake, positionSnack, positionTete, lines, columns, score } = this.state;
 
     let positionsAll = [positionSnack].concat(positionSnake).concat(positionTete)
 
     return (
       <div>
-        <h1>Mode noob !! </h1>
+        <h1>Mode noob !!</h1>
+        <ul>
+          <li>Your size : { positionSnake.length + 1 }</li>
+          <li>How many food : { score }</li>
+        </ul>
         <Grid lines={lines} columns={columns} positionsAll={positionsAll}/>
       </div>
     )

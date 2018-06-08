@@ -38,6 +38,11 @@ const stylize = (props) => ({
     display: 'inline-block',
     backgroundColor: 'orange',
   },
+  divNumber: {
+    paddingTop: "11px",
+    textAlign: "center",
+  }
+  ,
   imageTete: {
     display: "flex",
     marginTop: "-35%",
@@ -53,11 +58,11 @@ class Cell extends PureComponent {
   }
 
   getStyle(cellType) {
-    if (cellType.cellType === cellTypes.snakeHead) {
+    if (cellType === cellTypes.snakeHead) {
       return stylize(this.props).divHead
-    } else if (cellType.cellType === cellTypes.snake) {
+    } else if (cellType === cellTypes.snake) {
       return stylize(this.props).divSnake
-    } else if (cellType.cellType === cellTypes.snack) {
+    } else if (cellType === cellTypes.snack) {
       return stylize(this.props).divSnack
     } else {
       return stylize(this.props).divNone
@@ -72,17 +77,33 @@ class Cell extends PureComponent {
     }
   }
 
+  isSnack() {
+  if (this.props.cellType === cellTypes.snack) {
+    return true
+  } else {
+    return false
+  }
+}
+
   render() {
-    const cellType = this.props
+    const {cellType, score} = this.props
+    
     const image = this.isHead() ? (
       <img src={head} height="25px" style={stylize(this.props).imageTete}/>
     ) : (
       ""
     )
 
+    const ballNumber = this.isSnack() ? (
+      <div style={stylize(this.props).divNumber}>{score%7+1}</div>
+    ) : (
+      ""
+    )
+
+
     return (
-      <div style={ this.getStyle(cellType)} >
-        {image}
+      <div style={ this.getStyle(cellType) } >
+        {image}{ballNumber}
       </div>
     )
   }

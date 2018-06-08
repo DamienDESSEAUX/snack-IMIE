@@ -18,7 +18,7 @@ class Game extends PureComponent {
   render() {
     return (
       <div>
-        <h1>Dragon Ball <strike>Super</strike>Snake</h1>
+        <h1 align="center">Dragon Ball <strike>Super</strike>Snake</h1>
         <App/>
       </div>
     )

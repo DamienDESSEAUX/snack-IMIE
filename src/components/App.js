@@ -91,8 +91,6 @@ class App extends PureComponent {
   generateSnack(){
     const { positionSnake, positionTete } = this.state;
     let flag = true
-    let line = 0
-    let column = 0
     let newSnack = new Element()
     while (flag) {
       flag = false
@@ -161,7 +159,7 @@ class App extends PureComponent {
           <li>Your size : { positionSnake.length + 1 }</li>
           <li>How many food : { score }</li>
         </ul>
-        <Grid lines={lines} columns={columns} positionsAll={positionsAll}/>
+        <Grid lines={lines} columns={columns} positionsAll={positionsAll} score={score} />
       </div>
     )
   }

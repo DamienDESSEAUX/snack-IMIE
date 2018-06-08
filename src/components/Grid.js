@@ -39,7 +39,7 @@ class Grid extends PureComponent {
   }
 
   render() {
-    const {lines, columns, positionsAll } = this.props;
+    const {lines, columns, positionsAll, score } = this.props;
 
     return (
       <div style={stylize(this.props).title}>
@@ -51,7 +51,7 @@ class Grid extends PureComponent {
                 {
                   Array(columns).fill(true).map((value,x) => (
                       /*<Cell key={`${x}.${y}`} isPresent={ this.getPresence(`${x}.${y}`) }/>*/
-                      <Cell key={`${x}.${y}`} cellType={ this.getPresence(new Element(y, x, cellTypes.none), positionsAll) }/>
+                      <Cell key={`${x}.${y}`} score={score} cellType={ this.getPresence(new Element(y, x, cellTypes.none), positionsAll) }/>
                   ))
                 }
               </div>

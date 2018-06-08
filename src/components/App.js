@@ -12,15 +12,13 @@ class App extends PureComponent {
     super(props)
 
     this.state = {
-      lines: 15,
-      columns: 15,
       positions: Array(),
       positionTete: new Element(5, 5, cellTypes.snakeHead),
       positionSnake: Array(),
       positionSnack: new Element(3, 3, cellTypes.snack),
       lastDirection: 0,
       score: 0,
-      isPause: false
+      isPause: true
     }
 
     this.state.positionSnake.push(new Element(this.state.positionTete.line, this.state.positionTete.column-1, cellTypes.snake))
@@ -38,20 +36,19 @@ class App extends PureComponent {
       positionSnake: newSnake,
       positionSnack: this.generateSnack(),
       lastDirection: 39,
-      score: 0
+      score: 0,
     })
   }
 
   handleKeyup(event) {
 
-    //console.log(event.keyCode)
-    if (event.keyCode == 19) {
+    if (event.keyCode == 19 || event.keyCode == 32) {
       this.setState({
         isPause: !this.state.isPause
       })
     }
 
-    if (!this.state.isPause) {
+    if (this.state.isPause) {
       let newPositionTeteLine = this.state.positionTete.line
       let newPositionTeteColonne = this.state.positionTete.column
 
@@ -69,7 +66,6 @@ class App extends PureComponent {
         this.actualise(newPositionTeteColonne, newPositionTeteLine, event.keyCode)
       }
     }
-
   }
 
   actualise(newPositionTeteColonne, newPositionTeteLine, newLastDirection){
@@ -84,7 +80,24 @@ class App extends PureComponent {
       positionSnake: positionSnake,
       lastDirection: newLastDirection
     })
-    this.gestionColision()
+
+    let cellColision = this.detectColission()
+
+    if ( cellColision === cellTypes.none) {
+      this.state.positionSnake.pop()
+      this.setState({
+        positionSnake: [].concat(this.state.positionSnake)
+      })
+    } else if (cellColision === cellTypes.snack) {
+      this.setState({
+        score: this.state.score+1
+      })
+      if (this.props.nbVoeuxSouhait === this.getNombreDeVoeux()) {
+        console.log("Win !!")
+      }
+    } else if (cellColision === cellTypes.wall || cellColision === cellTypes.snake) {
+      this.resetGame()
+    }
 
   }
 
@@ -110,7 +123,7 @@ class App extends PureComponent {
   
   detectColission(){
     const { positionSnake, positionSnack, positionTete } = this.state;
-    const { lines, columns } = this.state;
+    const { lines, columns } = this.props;
     let cellColision = cellTypes.none
     // snack
     if (positionTete.line === positionSnack.line && positionTete.column === positionSnack.column) {
@@ -127,38 +140,27 @@ class App extends PureComponent {
 
     return cellColision
   }
-  
-  gestionColision(){
-    let cellColision = this.detectColission()
 
-    if ( cellColision === cellTypes.none) {
-      this.state.positionSnake.pop()
-      this.setState({
-        positionSnake: [].concat(this.state.positionSnake)
-      })
-    } else if (cellColision === cellTypes.snack) {
-      this.setState({
-        positionSnack: this.generateSnack(),
-        score: this.state.score+1
-      })
-    } else if (cellColision === cellTypes.wall || cellColision === cellTypes.snake) {
-      this.resetGame()
-    }
+  getNombreDeVoeux(){
+    return Math.trunc(this.state.score/7)
   }
 
   render() {
 
-    const { positionSnake, positionSnack, positionTete, lines, columns, score } = this.state;
+    const { positionSnake, positionSnack, positionTete, score } = this.state;
+    const { lines, columns, nbVoeuxSouhait } = this.props;
 
     let positionsAll = [positionSnack].concat(positionSnake).concat(positionTete)
 
     return (
       <div>
         <ul>
-          <li>Mode noob !!</li>
-          <li>Your size : { positionSnake.length + 1 }</li>
-          <li>How many food : { score }</li>
+          Stats :
+          <li>Ta taille : { positionSnake.length + 1 }</li>
+          <li>Nombre de boules récupérées : { score }</li>
+          <li>Nombre de voeux : { this.getNombreDeVoeux() }</li>
         </ul>
+        Aide Shenron à récupérer les 7 boules du Dragon pour obtenir le voeux !!
         <Grid lines={lines} columns={columns} positionsAll={positionsAll} score={score} />
       </div>
     )

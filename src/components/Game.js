@@ -11,15 +11,25 @@ class Game extends PureComponent {
     super(props)
 
     this.state = {
+      nbVoeuxSouhait: 2,
+      lines: 15,
+      columns: 15
     }
   }
 
 
   render() {
+    const { nbVoeuxSouhait, lines, columns} = this.state
+
     return (
       <div>
         <h1 align="center">Dragon Ball <strike>Super</strike>Snake</h1>
-        <App/>
+        <ul>
+          Options :
+          <li>Map : {lines}x{columns}</li>
+          <li>Nombre de voeux souhaités : {nbVoeuxSouhait}</li>
+        </ul>
+        <App nbVoeuxSouhait={nbVoeuxSouhait} lines={lines} columns={columns} />
       </div>
     )
   }

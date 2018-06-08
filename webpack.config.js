@@ -21,6 +21,11 @@ module.exports = {
                 exclude: [path.resolve('.\\node_modules')],
                 use: ['style-loader', 'css-loader'],
             },
+            {
+                test: /\.png/,
+                exclude: [path.resolve('.\\node_modules')],
+                use: ['file-loader'],
+            },
         ]
     },
     plugins: [

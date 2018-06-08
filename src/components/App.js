@@ -156,8 +156,8 @@ class App extends PureComponent {
 
     return (
       <div>
-        <h1>Mode noob !!</h1>
         <ul>
+          <li>Mode noob !!</li>
           <li>Your size : { positionSnake.length + 1 }</li>
           <li>How many food : { score }</li>
         </ul>

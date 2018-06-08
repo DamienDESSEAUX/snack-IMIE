@@ -2,6 +2,7 @@
  * Created by Damien-MSI on 05/06/2018.
  */
 import React, { PureComponent } from 'react'
+import head from 'images/teteMini.png'
 
 export const cellTypes = {
   snakeHead: 'snakeHead',
@@ -22,22 +23,28 @@ const stylize = (props) => ({
     height: "25px",
     borderRadius: "11px",
     display: 'inline-block',
-    backgroundColor: 'rgb(0,200,0)',
+    backgroundColor: 'green',
   },
   divHead: {
     width: "25px",
     height: "25px",
     borderRadius: "11px",
     display: 'inline-block',
-    backgroundColor: 'green',
   },
   divSnack: {
     width: "25px",
     height: "25px",
     borderRadius: "12px",
     display: 'inline-block',
-    backgroundColor: 'red',
+    backgroundColor: 'orange',
   },
+  imageTete: {
+    display: "flex",
+    marginTop: "-35%",
+    marginLeft: "-35%",
+    width: "170%",
+    height: "170%",
+  }
 })
 
 class Cell extends PureComponent {
@@ -57,12 +64,25 @@ class Cell extends PureComponent {
     }
   }
 
+  isHead() {
+    if (this.props.cellType === cellTypes.snakeHead) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   render() {
     const cellType = this.props
+    const image = this.isHead() ? (
+      <img src={head} height="25px" style={stylize(this.props).imageTete}/>
+    ) : (
+      ""
+    )
 
     return (
       <div style={ this.getStyle(cellType)} >
-
+        {image}
       </div>
     )
   }

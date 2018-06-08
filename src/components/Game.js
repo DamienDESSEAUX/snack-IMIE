@@ -11,7 +11,7 @@ class Game extends PureComponent {
     super(props)
 
     this.state = {
-      nbVoeuxSouhait: 2,
+      nbVoeuxSouhait: 1,
       lines: 15,
       columns: 15
     }

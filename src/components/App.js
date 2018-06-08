@@ -89,11 +89,19 @@ class App extends PureComponent {
         positionSnake: [].concat(this.state.positionSnake)
       })
     } else if (cellColision === cellTypes.snack) {
+
       this.setState({
-        score: this.state.score+1
+          score: this.state.score+1
       })
       if (this.props.nbVoeuxSouhait === this.getNombreDeVoeux()) {
         console.log("Win !!")
+        this.setState({
+          positionSnack:[],
+        })
+      } else {
+        this.setState({
+          positionSnack: this.generateSnack(),
+        })
       }
     } else if (cellColision === cellTypes.wall || cellColision === cellTypes.snake) {
       this.resetGame()
@@ -103,11 +111,12 @@ class App extends PureComponent {
 
   generateSnack(){
     const { positionSnake, positionTete } = this.state;
+    const { lines, columns} = this.props
     let flag = true
     let newSnack = new Element()
     while (flag) {
       flag = false
-      newSnack = new Element(Math.floor(Math.random() * Math.floor(this.state.lines)),Math.floor(Math.random() * Math.floor(this.state.columns)),cellTypes.snack)
+      newSnack = new Element(Math.floor(Math.random() * Math.floor(lines)),Math.floor(Math.random() * Math.floor(columns)),cellTypes.snack)
       positionSnake.forEach(function(element) {
         if (newSnack.line === element.line && newSnack.column === element.column) {
           flag = true
